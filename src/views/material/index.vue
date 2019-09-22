@@ -7,8 +7,8 @@
       <template slot="title">素材管理</template>
     </bread-crumb>
     <!-- http-request 自定义上传 -->
-    <el-upload :show-file-list="false" :http-request="uploadImg" action="" class='too-difficult'>
-        <el-button type='primary'>我太难了(上传)</el-button>
+    <el-upload :show-file-list="false" :http-request="uploadImg" action="" class='upload'>
+        <el-button type='primary'>点击上传</el-button>
     </el-upload>
     <!-- el-tabs => el-tab-pane -->
     <el-tabs v-model="activeName" @tab-click="changeTab">
@@ -108,7 +108,7 @@ export default {
 </script>
 
 <style lang='less' scoped>
-.too-difficult {
+.upload {
     position: absolute;
     right:20px;
     margin-top:-10px;
