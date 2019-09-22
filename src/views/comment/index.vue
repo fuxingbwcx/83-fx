@@ -85,7 +85,7 @@ export default {
     // 打开或者关闭  row 当前行数据
     closeOrOpen (row) {
       let mess = row.comment_status ? '关闭' : '打开' // 得到打开或者关闭
-      this.$confrm(`您确定要${mess}评论?`).then(() => {
+      this.$confirm(`您确定要${mess}评论?`).then(() => {
         // 确定调用接口
         this.$axios({
           url: 'comments/status', // 地址
