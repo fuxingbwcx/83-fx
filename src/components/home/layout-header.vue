@@ -4,7 +4,7 @@
       <!-- 左侧 -->
       <el-col :span="6">
           <i class="el-icon-s-unfold"></i>
-          <span class='title'>江苏传智播客教育科技股份有限公司</span>
+          <span class='title'>江苏黑马教育科技股份有限公司</span>
       </el-col>
       <!-- 右侧 -->
       <el-col :span="4">
