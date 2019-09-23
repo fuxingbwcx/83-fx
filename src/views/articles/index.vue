@@ -23,11 +23,11 @@
       <div class="article-item" v-for="(item,index) in list" :key="index">
         <!-- 左侧 -->
          <div class='left'>
-            <img src="../../assets/img/404.png" alt="">
+            <img :src="item.cover.images.length>0?item.cover.images[0]:defaultImg" alt="">
             <div class='info'>
-                <span class='title'>asd</span>
-                <el-tag class='status'>dasdas</el-tag>
-                <span class='date'>qwe</span>
+                <span class='title'>{{item.title}}</span>
+                <el-tag :type="item.status | statusType" class='status'>{{item.status | statusText}}</el-tag>
+                <span class='date'>{{item.pubdata}}</span>
             </div>
         </div>
         <!-- 右侧 -->
@@ -44,7 +44,53 @@
 export default {
   data () {
     return {
-      list: [1, 2]
+      list: [],
+      // 将图片地址转为base64
+      defaultImg: require('../../assets/img/404.png')
+    }
+  },
+  methods: {
+    getArticles () {
+      this.$axios({
+        url: '/articles'
+      }).then(result => {
+        this.list = result.data.results
+      })
+    }
+  },
+  created () {
+    this.getArticles()
+  },
+  filters: {
+    statusText (value) {
+      switch (value) {
+        // 文章状态 0-草稿，1-待审核，2-审核通过，3-审核失败，4-已删除
+        case 0:
+          return '草稿'
+        case 1:
+          return '待审核'
+        case 2:
+          return '审核通过'
+        case 3:
+          return '审核失败'
+        case 4:
+          return '已删除'
+      }
+    },
+    statusType (value) {
+      switch (value) {
+        // 文章状态 0-草稿，1-待审核，2-审核通过，3-审核失败，4-已删除
+        case 0:
+          return 'warning'
+        case 1:
+          return 'info'
+        case 2:
+          return 'success'
+        case 3:
+          return 'danger'
+        case 4:
+          return 'danger'
+      }
     }
   }
 }
@@ -82,7 +128,7 @@ export default {
                 font-size:14px;
             }
             .status {
-                width: 60px;
+                width: 80px;
                 text-align: center
             }
         }
