@@ -4,6 +4,11 @@ import Router from 'vue-router'
 import Home from './views/home/'
 import Login from './views/login' // 简写
 import Main from './views/home/main'
+// 在使用Element UI 时点击同一个路由，控制台报错，但不影响使用
+const originalPush = Router.prototype.push
+Router.prototype.push = function push (location) {
+  return originalPush.call(this, location).catch(err => err)
+}
 Vue.use(Router)
 
 export default new Router({
