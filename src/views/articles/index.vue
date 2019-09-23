@@ -38,7 +38,7 @@
         <!-- 右侧 -->
         <div class='right'>
             <span><i class="el-icon-edit"></i>修改</span>
-            <span><i class="el-icon-delete"></i>删除</span>
+            <span @click="delArticles(item.id)"><i class="el-icon-delete"></i>删除</span>
         </div>
       </div>
       <el-row type="flex" justify="center" style="margin:20px 0">
@@ -78,6 +78,18 @@ export default {
     }
   },
   methods: {
+    delArticles (id) {
+      this.$confirm('亲，确定要删除此文章吗').then(() => {
+        // id超过了安全数字限制 被jsonbigint转成了bigNUmber类型 要想变成字符串 id.toString()
+        this.$axios({
+          url: `/articles/${id.toString()}`,
+          method: 'delete'
+        }).then(() => {
+          // 带条件的查询
+          this.queryArticles()
+        })
+      })
+    },
     changeV () {
       this.page.currentPage = 1
       this.queryArticles()
@@ -195,6 +207,8 @@ export default {
         font-size: 12px;
         span {
             margin-right:8px;
+            // 鼠标进入显示小手
+            cursor: pointer;
         }
     }
 }
