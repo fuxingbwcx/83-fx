@@ -6,7 +6,7 @@
     <el-form style="margin-left:10px">
       <el-form-item label="文章状态：">
          <!-- v-model来源于 el-radio中的label属性 -->
-        <el-radio-group v-model="formData.status" @click="changeV">
+        <el-radio-group v-model="formData.status" @change="changeV">
           <el-radio :label="5">全部</el-radio>
           <el-radio :label="0">草稿</el-radio>
           <el-radio :label="1">待审核</el-radio>
@@ -15,7 +15,7 @@
         </el-radio-group>
       </el-form-item>
       <el-form-item label="频道列表:">
-        <el-select  @click="changeV" v-model="formData.channel_id">
+        <el-select  @change="changeV" v-model="formData.channel_id">
           <el-option v-for="item in channels" :key = "item.id" :value = "item.id" :label = "item.name"></el-option>
         </el-select>
       </el-form-item>
