@@ -67,12 +67,24 @@ export default {
         this.channels = result.data.channels // 获取channels频道
       })
     },
+    // 根据文章id获取文章详情
+    getArticleById (articleId) {
+      this.$axios({
+        url: `/articles/${articleId}`
+      }).then(result => {
+        this.formData = result.data
+      })
+    },
     publish (draft) {
       this.$refs.publishForm.validate((isOK) => {
         if (isOK) {
+          // 有 articleId就是编辑 没articleId就是新增
+          // let articleId = this.$route.params.articleId
+          let { articleId } = this.$route.params
+
           this.$axios({
-            url: '/articles',
-            method: 'post',
+            url: articleId ? `/articles${articleId}` : '/articles',
+            method: articleId ? 'put' : 'post',
             data: this.formData,
             params: { draft } // :draft
           }).then(() => {
@@ -85,6 +97,11 @@ export default {
   },
   created () {
     this.getChannels() // 获取频道
+    // 有 articleId就是编辑 没articleId就是新增
+    let { articleId } = this.$route.params
+
+    // 如果articleId存在才执行后界面的逻辑
+    articleId && this.getArticleById(articleId)
   }
 }
 </script>
