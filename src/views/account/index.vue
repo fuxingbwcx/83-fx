@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import { log } from 'util'
+import eventBus from '../../utils/eventBus'
 export default {
   data () {
     return {
@@ -57,7 +57,6 @@ export default {
   },
   methods: {
     uploadImg (params) {
-      console.log(params)
       this.loading = true
       let data = new FormData()
       // 取出文件放到参数中
@@ -67,6 +66,8 @@ export default {
         method: 'patch',
         data
       }).then(result => {
+        // 抛出一个事件
+        eventBus.$emit('updateUserInfo')
         // 成功上传的头像更新给当前的页面数据
         this.formData.photo = result.data.photo
         this.loading = false
@@ -81,6 +82,8 @@ export default {
             method: 'patch',
             data: this.formData
           }).then(() => {
+            // 提示别的组件 要更新数据
+            eventBus.$emit('updateUserInfo') // 抛出一个事件
             // 成功了 提示消息
             this.$message({ message: '保存成功', type: 'success' })
           })
