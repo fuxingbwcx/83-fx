@@ -107,10 +107,10 @@ export default {
           let { articleId } = this.$route.params
 
           this.$axios({
-            url: articleId ? `/articles${articleId}` : '/articles',
+            url: articleId ? `/articles/${articleId}` : '/articles',
             method: articleId ? 'put' : 'post',
-            data: this.formData,
-            params: { draft } // :draft
+            params: { draft },
+            data: this.formData
           }).then(() => {
             // 发布成功返回内容列表
             this.$router.push('/home/articles')
@@ -121,13 +121,22 @@ export default {
   },
   created () {
     this.getChannels() // 获取频道
-    // 有 articleId就是编辑 没articleId就是新增
-    let { articleId } = this.$route.params
-
-    // 如果articleId存在才执行后界面的逻辑
-    articleId && this.getArticleById(articleId)
+    // 获取id
+    let { articleId } = this.$route.params // 有 articleId就是编辑 没articleId就是新增
+    articleId && this.getArticleById(articleId) // 如果articleId存在才执行后界面的逻辑
+    // if (articleId) {
+    //   this.getArticleById(articleId)
+    // }
   }
 }
+// created () {
+//   this.getChannels() // 获取频道
+//   // 有 articleId就是编辑 没articleId就是新增
+//   let { articleId } = this.$route.params
+
+//   // 如果articleId存在才执行后界面的逻辑
+//   articleId && this.getArticleById(articleId)
+// }
 </script>
 
 <style>

@@ -80,7 +80,7 @@ export default {
   methods: {
     goEdit (id) {
       // 动态路由传参 由于id是bignumber类型 需要toString 转成字符串
-      this.$router.push(`${id.toString()}`)
+      this.$router.push(`/home/publish/${id.toString()}`)
     },
     delArticles (id) {
       this.$confirm('亲，确定要删除此文章吗').then(() => {
