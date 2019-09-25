@@ -1,5 +1,5 @@
 <template>
-   <el-card>
+   <el-card v-loading="loading">
        <bread-crumb slot='header'>
           <template slot='title'>发布文章</template>
        </bread-crumb>
@@ -20,7 +20,7 @@
                 </el-radio-group>
             </el-form-item>
               <!-- 封面组件 传递父组件的images到子组件-->
-            <cover-image :images="formData.cover.images"></cover-image>
+            <cover-image @selectImg="changeImg" :images="formData.cover.images"></cover-image>
             <el-form-item prop="channel_id" label="频道">
                 <el-select v-model="formData.channel_id">
                     <el-option v-for="item in channels" :key="item.id" :value="item.id" :label="item.name"></el-option>
@@ -39,6 +39,7 @@
 export default {
   data () {
     return {
+      loading: false,
       channels: [],
       formData: {
         title: '',
@@ -61,6 +62,14 @@ export default {
     }
   },
   methods: {
+    // 接收子组件传过来得数据 更改images [""] ["","",""] []
+    changeImg (url, index) {
+      //       由于 JavaScript 的限制，Vue **不能**检测以下数组的变动：
+
+      // 1. 当你利用索引直接设置一个数组项时，例如：`vm.items[indexOfItem] = newValue`
+      // 2. 当你修改数组的长度时，例如：`vm.items.length = newLength`
+      this.formData.cover.images = this.formData.cover.images.map((item, i) => i === index ? url : item)
+    },
     // 类型改变事件
     changeType () {
       // 获取最新的type
@@ -82,10 +91,12 @@ export default {
     },
     // 根据文章id获取文章详情
     getArticleById (articleId) {
+      this.loading = true
       this.$axios({
         url: `/articles/${articleId}`
       }).then(result => {
         this.formData = result.data
+        this.loading = false
       })
     },
     publish (draft) {

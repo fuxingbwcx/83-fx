@@ -1,0 +1,80 @@
+<template>
+  <el-tabs>
+      <!-- 页签组件 -->
+      <el-tab-pane label="素材库">
+        <!-- 全部的素材数据 v-for -->
+        <div class="imgs-list">
+            <el-card class="imgs-item" v-for="item in list" :key="item.id">
+                <img @click="clickImg(item)" :src="item.url" alt="">
+            </el-card>
+        </div>
+        <el-row type="flex" justify="center">
+            <el-pagination
+              background
+            layout="prev, pager, next"
+            :total="page.total"
+            :current-page="page.currentPage"
+            :page-size="page.pageSize"
+            @current-change="changePage">
+            </el-pagination>
+        </el-row>
+      </el-tab-pane>
+      <el-tab-pane label="上传图片"></el-tab-pane>
+  </el-tabs>
+</template>
+
+<script>
+export default {
+  data () {
+    return {
+      list: [], // 全部素材
+      page: {
+        pageSize: 12,
+        currentPage: 1,
+        total: 0
+      }
+    }
+  },
+  methods: {
+    // 点击素材时触发
+    clickImg (item) {
+      this.$emit('selectOneImg', item.url)
+    },
+    // 获取页码
+    changePage (newPage) {
+      this.page.currentPage = newPage
+      this.getAllImg()
+    },
+    //   获取所有图片
+    getAllImg () {
+      this.$axios({
+        url: '/user/images',
+        params: { collect: false, page: this.page.currentPage, per_page: this.page.pageSize }
+      }).then(result => {
+        this.list = result.data.results
+        this.page.total = result.data.total_count
+      })
+    }
+  },
+  created () {
+    this.getAllImg()
+  }
+}
+</script>
+
+<style lang='less' scoped>
+.imgs-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    .imgs-item {
+        width: 120px;
+        height:100px;
+        margin:10px;
+        img {
+            width:100%;
+            height: 100%;
+        }
+    }
+}
+</style>
