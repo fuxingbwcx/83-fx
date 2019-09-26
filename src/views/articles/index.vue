@@ -55,6 +55,7 @@
 </template>
 
 <script>
+import { getArticles, getChannels, delArticles } from '../../api/articles'
 export default {
   data () {
     return {
@@ -82,17 +83,12 @@ export default {
       // 动态路由传参 由于id是bignumber类型 需要toString 转成字符串
       this.$router.push(`/home/publish/${id.toString()}`)
     },
-    delArticles (id) {
-      this.$confirm('亲，确定要删除此文章吗').then(() => {
-        // id超过了安全数字限制 被jsonbigint转成了bigNUmber类型 要想变成字符串 id.toString()
-        this.$axios({
-          url: `/articles/${id.toString()}`,
-          method: 'delete'
-        }).then(() => {
-          // 带条件的查询
-          this.queryArticles()
-        })
-      })
+    async delArticles (id) {
+      await this.$confirm('亲，确定要删除此文章吗') // id超过了安全数字限制 被jsonbigint转成了bigNUmber类型 要想变成字符串 id.toString()
+      // 调用删除方法
+      await delArticles(id)
+      // 带条件的查询
+      this.queryArticles()
     },
     changeV () {
       this.page.currentPage = 1
@@ -114,21 +110,14 @@ export default {
       }
       this.getArticles(params)
     },
-    getArticles (params) {
-      this.$axios({
-        url: '/articles',
-        params
-      }).then(result => {
-        this.list = result.data.results
-        this.page.total = result.data.total_count
-      })
+    async getArticles (params) {
+      let result = await getArticles(params)
+      this.list = result.data.results
+      this.page.total = result.data.total_count
     },
-    getChannels () {
-      this.$axios({
-        url: '/channels'
-      }).then(result => {
-        this.channels = result.data.channels
-      })
+    async getChannels () {
+      let result = await getChannels()
+      this.channels = result.data.channels // 获取channels频道
     }
   },
   created () {
