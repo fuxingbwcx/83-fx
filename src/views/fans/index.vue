@@ -99,6 +99,14 @@ export default {
     this.lifeChart = echarts.init(this.$refs.lifeChart)
     this.setWorkOption()
     this.setLifeOption()
+  },
+  watch: {
+    lifeData (newValue) {
+      this.setLifeOption()
+    },
+    workData (newValue) {
+      this.setWorkOption()
+    }
   }
 }
 </script>
