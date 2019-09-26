@@ -4,6 +4,7 @@ import layoutHeader from './home/layout-header'
 import breadCrumb from './common/bread-crumb'
 import coverImg from './publish/cover-image'
 import selectImg from './publish/select-image'
+import heimaDate from './common/heima-date'
 import 'quill/dist/quill.core.css'
 import 'quill/dist/quill.snow.css'
 import 'quill/dist/quill.bubble.css'
@@ -19,5 +20,6 @@ export default {
     Vue.component('quill-editor', quillEditor) // 全局注册富文本编辑
     Vue.component('cover-image', coverImg) // 注册封面组件
     Vue.component('select-image', selectImg) // 注册选择图片组件
+    Vue.component('heima-date', heimaDate) // 注册时钟组件
   }
 }

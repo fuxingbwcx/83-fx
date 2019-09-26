@@ -1,5 +1,9 @@
 <template>
- <div class='home'></div>
+  <div class='home'>
+    <el-row style='height:100vh' type='flex'>
+      <heima-date></heima-date>
+    </el-row>
+ </div>
 </template>
 
 <script>
